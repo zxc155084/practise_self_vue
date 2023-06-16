@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How to add table row in jQuery?</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+      table {
+        margin: 25px 0;
+        width: 100%;
+      }
+      table th,
+      table td {
+        padding: 10px;
+        text-align: center;
+      }
+      table td {
+        width: 33%;
+      }
+      .td-display {
+        display: inline;
+      }
+
+      @media screen and (max-width: 576px) {
+        th {
+          display: none;
+        }
+        td {
+          padding: 0;
+          line-height: 2em;
+          display: flex;
+          justify-content: center;
+        }
+        table td {
+          width: 100%;
+        }
+        .td-display {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 style="color: green">GeeksForGeeks</h1>
+
+    <b>How to add table row in jQuery?</b>
+
+    <p>Click on the button below to add a row to the table</p>
+
+    <h1 style="color: green; text-align:center">創始榮董</h1>
+    <table id="table1" class="rwd-table">
+      <tbody></tbody>
+    </table>
+
+    <h1 style="color: green; text-align:center">榮譽董事</h1>
+    <table id="table2" class="rwd-table">
+      <tbody></tbody>
+    </table>
+
+    <!-- Script to add table row -->
+    <script>
+      var chunk = function (arr, num) {
+        num = num * 1 || 1;
+        var ret = [];
+        arr.forEach(function (item, i) {
+          if (i % num === 0) {
+            ret.push([]);
+          }
+          ret[ret.length - 1].push(item);
+        });
+        console.log(ret);
+        return ret;
+      };
+      $.ajax({
+        type: "GET",
+        url: "https://test.api.donation-history.gebis.net/honor/electronicWall",
+        dataType: "json",
+        success: function (response) {
+          console.log("res.data: ", response);
+
+          // 創始榮董
+          let checkHonorArychairmanList = chunk(response.honorArychairman, 3);
+          $.each(checkHonorArychairmanList, function () {
+            let markup = "";
+            if (this.length === 1) {
+              markup = `<tr><td>${this[0]}</td><td class="td-display">&emsp;</td><td class="td-display">&emsp;</td></tr>`;
+            }
+
+            if (this.length === 2) {
+              markup = `<tr><td>${this[0]}</td><td>${this[1]}</td><td class="td-display">&emsp;</td></tr>`;
+            }
+
+            if (this.length === 3) {
+              markup = `<tr><td>${this[0]}</td><td>${this[1]}</td><td>${this[2]}</td></tr>`;
+            }
+
+            tableBody = $("#table1");
+            tableBody.append(markup);
+          });
+
+          // 榮譽董事
+          let checkHonorFameList = chunk(response.honorFame, 3);
+          $.each(checkHonorFameList, function () {
+            let markup = "";
+            if (this.length === 1) {
+              markup = `<tr><td>${this[0]}</td><td class="td-display">&emsp;</td><td class="td-display">&emsp;</td></tr>`;
+            }
+
+            if (this.length === 2) {
+              markup = `<tr><td>${this[0]}</td><td>${this[1]}</td><td class="td-display">&emsp;</td></tr>`;
+            }
+
+            if (this.length === 3) {
+              markup = `<tr><td>${this[0]}</td><td>${this[1]}</td><td>${this[2]}</td></tr>`;
+            }
+
+            tableBody = $("#table2");
+            tableBody.append(markup);
+          });
+        },
+        error: function (thrownError) {
+          console.log(thrownError);
+        },
+      });
+    </script>
+  </body>
+</html>
