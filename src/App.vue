@@ -5,7 +5,7 @@
         <el-tabs v-model="tabName" @tab-click="handleClick">
           <el-tab-pane label="報名列表" name="報名列表"></el-tab-pane>
           <el-tab-pane label="新增報名" name="新增報名"></el-tab-pane>
-          <el-tab-pane label="VueTest修改" name="VueTest修改"></el-tab-pane>
+          <el-tab-pane label="Vue" name="Vue"></el-tab-pane>
         </el-tabs>
       </el-header>
       <el-container>
@@ -20,7 +20,7 @@
             :formList="signUpList"
             :test="1"
           />
-          <VueTest v-if="tabName == 'VueTest'" />
+          <VueTest v-if="tabName == 'Vue'" />
         </el-main>
       </el-container>
     </el-container>
