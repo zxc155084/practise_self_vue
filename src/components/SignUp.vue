@@ -67,8 +67,8 @@
 import { reactive, ref, onMounted } from "vue";
 import axios from "axios";
 
-function getQuotes(param: String) {
-  const url = `/apir/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${param}`;
+function getQuotes() {
+  const url = `https://script.google.com/macros/s/AKfycbyqLQO1_HQ4mcQa16r-PC4EW3HE1MmchXv71baNYcxDSwWevmIzSB1UuSB5aBi_dI-1/exec`;
   axios.get(`${url}`).then(
     (response) => {
       const msg = response.data;
@@ -80,9 +80,8 @@ function getQuotes(param: String) {
 }
 
 onMounted(() => {
-  let param = `tse_2330.tw|tse_0050.tw|tse_00881.tw`;
   // 取得初始資料
-  //   getQuotes(param);
+  getQuotes();
 });
 
 const emit = defineEmits(["onSubmit"]);
