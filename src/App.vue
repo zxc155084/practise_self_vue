@@ -6,7 +6,7 @@
           <el-tab-pane label="報名列表" name="報名列表"></el-tab-pane>
           <el-tab-pane label="新增報名" name="新增報名"></el-tab-pane>
           <el-tab-pane label="Vue" name="Vue"></el-tab-pane>
-          <el-tab-pane label="Vue2" name="Vue2"></el-tab-pane>
+          <el-tab-pane label="股票" name="股票"></el-tab-pane>
         </el-tabs>
       </el-header>
       <el-container>
@@ -22,6 +22,7 @@
             :test="1"
           />
           <VueTest v-if="tabName == 'Vue'" />
+          <Quotes v-if="tabName == '股票'" />
         </el-main>
       </el-container>
     </el-container>
@@ -33,9 +34,10 @@ import { ref } from "vue";
 import SignUp from "@/components/SignUp.vue";
 import SignUpList from "@/components/SignUpList.vue";
 import VueTest from "@/components/VueTest.vue";
+import Quotes from "./components/Quotes.vue";
 import type { TabsPaneContext } from "element-plus";
 
-const tabName = ref("新增報名");
+const tabName = ref("股票");
 
 /// 已報名的列表
 const signUpList = ref<any>([]);

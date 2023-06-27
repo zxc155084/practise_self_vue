@@ -17,7 +17,7 @@ export default defineConfig({
     proxy: {
        // 使用 proxy 实例
        '^/apir': {
-        target: 'https://script.google.com/macros/s', // 后端服务实际地址
+        target: 'https://mis.twse.com.tw/stock', // 后端服务实际地址
         changeOrigin: true, //开启代理
         rewrite: (path) => path.replace(/^\/apir/, '')
       },

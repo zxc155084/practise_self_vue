@@ -81,7 +81,7 @@ function getQuotes() {
 
 onMounted(() => {
   // 取得初始資料
-  getQuotes();
+  // getQuotes();
 });
 
 const emit = defineEmits(["onSubmit"]);
