@@ -1,5 +1,6 @@
 <template>
   <div class="sign-up-root">
+    <span style="font-size: 28px"> 更新時間：{{ update_time }} </span>
     <el-table
       :data="tableData"
       empty-text="暫無數據"
@@ -7,7 +8,6 @@
     >
       <el-table-column prop="c" label="股票代號" width="100" />
       <el-table-column prop="n" label="簡稱" width="120" />
-      <el-table-column prop="nf" label="公司全名" width="180" />
       <el-table-column prop="z" label="成交價" width="120">
         <template #default="scope">
           <span v-if="scope.row.z > scope.row.y" style="color: red">
@@ -43,9 +43,9 @@
           <span> {{ currency(scope.row.y) }} </span>
         </template>
       </el-table-column>
-      <el-table-column prop="tlong" label="資料更新時間">
+      <el-table-column label="資料更新時間">
         <template #default="scope">
-          <span> {{ scope.row.tlong }} </span>
+          <span> {{ convertTime(scope.row) }} </span>
         </template>
       </el-table-column>
     </el-table>
@@ -53,10 +53,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
 
 const tableData = ref([]);
+const update_time = ref("");
 
 function getQuotes() {
   const url = `https://script.google.com/macros/s/AKfycbyTcr3FO86Ljiyxx1TNsgLuIFq2csxj7v9AJ1HGP19iV1VXVVwOx0hCy8RoQO1Bxu4o/exec`;
@@ -79,40 +80,36 @@ const currency = function (inputNumber: any) {
   }).format(inputNumber);
 };
 
-const convertTime = function (timeStamp: number) {
-  var dateFormat = new Date(timeStamp);
-  console.log(
-    "Date: " +
-      dateFormat.getDate() +
-      "/" +
-      (dateFormat.getMonth() + 1) +
-      "/" +
-      dateFormat.getFullYear() +
-      " " +
-      dateFormat.getHours() +
-      ":" +
-      dateFormat.getMinutes() +
-      ":" +
-      dateFormat.getSeconds()
-  );
-  return `${
-    dateFormat.getDate() +
-    "/" +
-    (dateFormat.getMonth() + 1) +
-    "/" +
-    dateFormat.getFullYear() +
-    " " +
-    dateFormat.getHours() +
-    ":" +
-    dateFormat.getMinutes() +
-    ":" +
-    dateFormat.getSeconds()
-  }`;
+const convertTime = function (data: any) {
+  return `${data.d} ${data.t}`;
 };
 
 onMounted(() => {
   // 取得初始資料
   getQuotes();
+  // 更新時間
+  update_time.value = nowUpdateTime();
+});
+
+const nowUpdateTime = function () {
+  const d = new Date();
+  let dateStr = d.toLocaleDateString();
+  let timeStr = d.toLocaleTimeString();
+
+  return `${dateStr} ${timeStr}`;
+};
+
+/* refreshTimer */
+const refreshTimer = setInterval(function () {
+  // 取得初始資料
+  getQuotes();
+  // 更新時間
+  update_time.value = nowUpdateTime();
+}, 3 * 60 * 1000);
+
+onBeforeUnmount(() => {
+  //停止 重覆 refreshTimer
+  clearInterval(refreshTimer);
 });
 </script>
 
